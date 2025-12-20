@@ -1,5 +1,6 @@
 import Fastify from 'fastify';
 import { registerRoutes } from './routes.js';
+import { closePool } from './db.js';
 
 async function main() {
   const app = Fastify({
@@ -10,10 +11,21 @@ async function main() {
   await registerRoutes(app);
 
   // Graceful shutdown
-  process.on('SIGTERM', async () => {
-    await app.close();
-    process.exit(0);
-  });
+  const gracefulShutdown = async () => {
+    app.log.info('Starting graceful shutdown...');
+    try {
+      await closePool();
+      await app.close();
+      app.log.info('Graceful shutdown completed');
+      process.exit(0);
+    } catch (error) {
+      app.log.error({ error }, 'Error during graceful shutdown');
+      process.exit(1);
+    }
+  };
+
+  process.on('SIGTERM', gracefulShutdown);
+  process.on('SIGINT', gracefulShutdown);
 
   try {
     const port = Number(process.env.PORT) || 3000;
