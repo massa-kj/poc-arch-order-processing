@@ -1,0 +1,54 @@
+services:
+  order-api:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@db:5432/orders
+      NODE_ENV: development
+      PORT: 3000
+    ports:
+      - "3001:3000"
+    develop:
+      watch:
+        - action: sync
+          path: ./app/src
+          target: /usr/src/app/src
+        - action: rebuild
+          path: ./app/package.json
+    networks:
+      - order-network
+    restart: unless-stopped
+
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: orders
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8"
+    ports:
+      - "5433:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+      - ./db/init:/docker-entrypoint-initdb.d
+    networks:
+      - order-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+volumes:
+  pg_data:
+    driver: local
+
+networks:
+  order-network:
+    driver: bridge

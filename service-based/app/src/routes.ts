@@ -4,6 +4,11 @@ import { saveOrder, getOrder, updateOrder } from './db.js';
 import { CreateOrderRequest, OrderParams, ApiError } from './type.js';
 
 export async function registerRoutes(app: FastifyInstance) {
+  // Health check endpoint for production monitoring
+  app.get('/health', async (req, reply) => {
+    return { status: 'ok', timestamp: new Date().toISOString() };
+  });
+
   // create order
   app.post<{ Body: CreateOrderRequest }>('/orders', async (req, reply) => {
     const { userId, items = [] } = req.body;
