@@ -1,0 +1,21 @@
+{
+  "name": "poc-arch-order-processing",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Architecture Comparison PoC – Order Processing",
+  "scripts": {
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "format:service-based": "cd service-based/app && npm run format",
+    "format:check:service-based": "cd service-based/app && npm run format:check"
+  },
+  "devDependencies": {
+    "prettier": "^3.0.0"
+  },
+  "workspaces": [
+    "service-based/app",
+    "microservices/*/",
+    "event-driven/*/",
+    "space-based/*/"
+  ]
+}
