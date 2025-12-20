@@ -1,0 +1,4 @@
+node_modules
+
+# fastify logs
+server.log
