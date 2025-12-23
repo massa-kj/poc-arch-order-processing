@@ -1,0 +1,30 @@
+{
+  "name": "inventory-service",
+  "version": "0.1.0",
+  "description": "Inventory management service for service-based architecture",
+  "main": "src/index.ts",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "type-check": "tsc --noEmit"
+  },
+  "keywords": [
+    "inventory",
+    "service-based",
+    "architecture"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "fastify": "^4.29.1",
+    "pg": "^8.11.3"
+  },
+  "devDependencies": {
+    "@types/node": "^25.0.3",
+    "@types/pg": "^8.11.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.6.3"
+  }
+}

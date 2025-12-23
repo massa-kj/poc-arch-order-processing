@@ -23,6 +23,30 @@ services:
       - order-network
     restart: unless-stopped
 
+  inventory-service:
+    build:
+      context: ./services/inventory
+      dockerfile: Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@db:5432/orders
+      NODE_ENV: development
+      PORT: 3002
+    ports:
+      - "3002:3002"
+    develop:
+      watch:
+        - action: sync
+          path: ./services/inventory/src
+          target: /usr/src/app/src
+        - action: rebuild
+          path: ./services/inventory/package.json
+    networks:
+      - order-network
+    restart: unless-stopped
+
   db:
     image: postgres:16-alpine
     restart: unless-stopped
