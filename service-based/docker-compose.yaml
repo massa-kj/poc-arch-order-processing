@@ -1,7 +1,7 @@
 services:
   order-api:
     build:
-      context: ./app
+      context: ./services/order
       dockerfile: Dockerfile
     depends_on:
       db:
@@ -9,16 +9,16 @@ services:
     environment:
       DATABASE_URL: postgres://postgres:postgres@db:5432/orders
       NODE_ENV: development
-      PORT: 3000
+      PORT: 3001
     ports:
-      - "3001:3000"
+      - "3001:3001"
     develop:
       watch:
         - action: sync
-          path: ./app/src
+          path: ./services/order/src
           target: /usr/src/app/src
         - action: rebuild
-          path: ./app/package.json
+          path: ./services/order/package.json
     networks:
       - order-network
     restart: unless-stopped

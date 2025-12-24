@@ -1,7 +1,7 @@
 export interface Order {
   id: string;
   user_id: string;
-  status: "PENDING" | "CONFIRMED";
+  status: "PENDING" | "CONFIRMED" | "PROCESSING" | "COMPLETED" | "CANCELLED";
   created_at?: string;
   updated_at?: string;
 }
@@ -28,6 +28,14 @@ export interface OrderParams {
   id: string;
 }
 
+// Common API Types
 export interface ApiError {
   error: string;
+  details?: any;
+}
+
+export interface ApiSuccess<T = any> {
+  success: boolean;
+  data?: T;
+  message?: string;
 }

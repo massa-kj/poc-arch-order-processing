@@ -13,7 +13,7 @@
     "prettier": "^3.0.0"
   },
   "workspaces": [
-    "service-based/app",
+    "service-based/*/",
     "microservices/*/",
     "event-driven/*/",
     "space-based/*/"

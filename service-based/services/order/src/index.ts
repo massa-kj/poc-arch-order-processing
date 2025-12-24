@@ -28,7 +28,7 @@ async function main() {
   process.on('SIGINT', gracefulShutdown);
 
   try {
-    const port = Number(process.env.PORT) || 3000;
+    const port = Number(process.env.PORT) || 3001;
     const host = process.env.HOST || '0.0.0.0';  // Allow external connections in Docker
 
     await app.listen({ port, host });
